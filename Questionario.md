@@ -42,13 +42,17 @@ O LR tem a finalidade de armazenar o endereço de retorno de uma sub-rotina apó
 ### (g) Qual o propósito do Program Status Register (PSR) nos processadores ARM?
 O PSR armazena as informações sobre o estado do processador durante a execução do código, como modo de operação atual, flags de condição e estado de habilitação das interrupções. Ele, portanto, tem função de controlar e gerenciar a execução do código de forma adequada, especialment em situações de exceção.
 ### (h) O que é a tabela de vetores de interrupção?
+A tabela de vetores de interrupção é uma estrutura de dados que tem a finalidde de mapear os diferentes tipos de interrupção/exceção para os endereços de memórias em que os tratadores correspondentes estão localizados. Ela permite, assim, que o processador direcionne a execução para o código responsável por lidar com esses eventos de maneira otimizada.
 
 ### (i) Qual a finalidade do NVIC (**Nested Vectored Interrupt Controller**) nos microcontroladores ARM e como ele pode ser utilizado em aplicações de tempo real?
-
+O NVIC tem a finalidade de gerenciar as interrupções priorizando-as, com intuíto de que as interrupções mais críticas sejam atendidas primeiro. E aplicações de tempo real, o NVIC é crucial para garantir que as interrupções sejam tratadas com eficiência, um vez que tem a capacidade de ajustar prioridades dinamicament e controlar o fluxo de interrupções. 
 ### (j) Em modo de execução normal, o Cortex-M pode fazer uma chamada de função usando a instrução **BL**, que muda o **PC** para o endereço de destino e salva o ponto de execução atual no registador **LR**. Ao final da função, é possível recuperar esse contexto usando uma instrução **BX LR**, por exemplo, que atualiza o **PC** para o ponto anterior. No entanto, quando acontece uma interrupção, o **LR** é preenchido com um valor completamente  diferente,  chamado  de  **EXC_RETURN**.  Explique  o  funcionamento  desse  mecanismo  e especifique como o **Cortex-M** consegue fazer o retorno da interrupção. 
+Quando ocorre uma interrupção, o registrador LR armazena um valor especial chamado EXC_RETURN, que indica ao processador como realizar o retorno da subrotina. O EXC_RETURN cofifica as informa~ções sobre o contexto de exceções e o modo de retorno desejado, como modo de empilhamento, restauração de contexto e retorno ao modo de operação anterior.
+No momento em que a intrução de retorno é executada, o processador preenche o valor do EXC_RETURN no LR e realiza as açoes necessárias para restaurar o contexto e retornar ao estado anterior à exceção.
 
 ### (k) Qual  a  diferença  no  salvamento  de  contexto,  durante  a  chegada  de  uma  interrupção,  entre  os processadores Cortex-M3 e Cortex M4F (com ponto flutuante)? Descreva em termos de tempo e também de uso da pilha. Explique também o que é ***lazy stack*** e como ele é configurado. 
-
+No cortex-M3, o salvamento de contexto durante uma interrupção ocorre imediatamente, empilhando todos os registradores na pilha principal (MSP). No Cortex-M4F, o salvamento de contexto pode ser adiado (lazy stacking), priorizando a preservação dos registradores de ponto flutuante apenas quando necessário.
+O Lazy Stack é configurado através do bit LSPACT no registrador de controle FPCCR, e em termos de uso da pilha, o Cortex-M4F pode escolher entre empilhar o contexto de ponto flutuante na pilha de ponto flutuante (FPU stack) ou na pilha principal, dependendo da configuração do sistema.
 
 ## Referências
 
